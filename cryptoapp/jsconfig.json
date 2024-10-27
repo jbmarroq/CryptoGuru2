@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@/Components/*": ["./Components/*"], // Match your actual casing
+      "@/Config/*": ["./Config/*"], // Match your actual casing
+      "@/utils/*": ["./utils/*"]
     }
   }
 }

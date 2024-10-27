@@ -2,8 +2,11 @@ import useSWR from "swr";
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { GECKO_API_KEY } from "@/Config/CoinGeckoAPI";
 import { Skeleton } from "../ui/skeleton";
+import { Button } from "../ui/button";
+import { LineChartIcon } from "lucide-react";
 import {
   LinearGradient,
   stop,
@@ -207,7 +210,26 @@ export function SyncChart() {
           1 year
         </button>
       </div>
-      <h1 className="text-md md:text-xl dark:text-amber-500">Price (AU$)</h1>
+      <div className="flex flex-col">
+        <h1 className="text-md md:text-xl dark:text-amber-500 ml-2">
+          Price (AU$)
+        </h1>
+        <Link
+          href={{
+            pathname: `/forecast/${CoinID}/price`,
+            query: { timeframe: days }, // Pass the current timeframe
+          }}
+        >
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2"
+          >
+            <LineChartIcon className="h-4 w-4" />
+            Forecast
+          </Button>
+        </Link>
+      </div>
 
       <ResponsiveContainer width="100%" height={200}>
         <AreaChart
@@ -217,8 +239,8 @@ export function SyncChart() {
           syncId="anyId"
           margin={{
             top: 10,
-            right: windowWidth < 768 ? 0 : 90,
-            left: windowWidth < 768 ? 0 : 90,
+            right: windowWidth < 768 ? 0 : 30,
+            left: windowWidth < 768 ? 0 : 30,
             bottom: 0,
           }}
         >
@@ -228,44 +250,96 @@ export function SyncChart() {
               <stop offset="95%" stopColor="#FDDC5C" stopOpacity={0}></stop>
             </linearGradient>
           </defs>
-          <Brush
+          <CartesianGrid strokeDasharray="3 3" opacity={0.2} />
+          <XAxis
             dataKey="date"
-            height={25}
-            startIndex={5}
-            travellerWidth={5}
-            fill="#E5E5E5"
-            endIndex={chartData.length - 1}
+            tick={{ fontSize: 11 }}
+            tickFormatter={(value) => {
+              const date = new Date(value);
+              // For 24h data, show only hour
+              if (days === 1) {
+                return date.toLocaleTimeString("en-AU", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                });
+              }
+              // For longer periods, show abbreviated date
+              return date.toLocaleDateString("en-AU", {
+                month: "short",
+                day: "numeric",
+              });
+            }}
           />
-
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
           <YAxis
             domain={["auto", "auto"]}
             tickFormatter={(value) =>
               value.toLocaleString("en", {
                 notation: "compact",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 1,
               })
             }
+            tick={{ fontSize: 11 }}
+            width={50}
           />
           <Tooltip
-            labelStyle={{
-              color: "black",
+            contentStyle={{
+              backgroundColor: "rgba(17, 25, 40, 0.9)",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+              borderRadius: "8px",
+              padding: "8px",
+              color: "#ffffff",
+              fontSize: "12px",
             }}
+            labelStyle={{ color: "#ffffff" }}
+            labelFormatter={(value) => {
+              const date = new Date(value);
+              return date.toLocaleString("en-AU", {
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+            }}
+            formatter={(value) =>
+              new Intl.NumberFormat("en-AU", {
+                style: "currency",
+                currency: "AUD",
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }).format(value)
+            }
           />
           <Area
             type="monotone"
             dataKey="price"
             stroke="goldenrod"
-            // fill="#FDDC5C" //"#FDDC5C"
             fillOpacity={1}
             fill="url(#colorPrice)"
             dot={false}
           />
         </AreaChart>
       </ResponsiveContainer>
-      <h1 className="text-md md:text-xl dark:text-amber-500">
-        Market Caps (AU$)
-      </h1>
+      <div className="flex flex-col">
+        <h1 className="text-md md:text-xl dark:text-amber-500">
+          Market Caps (AU$)
+        </h1>
+        <Link
+          href={{
+            pathname: `/forecast/${CoinID}/market-cap`,
+            query: { timeframe: days },
+          }}
+        >
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2"
+          >
+            <LineChartIcon className="h-4 w-4" />
+            Forecast
+          </Button>
+        </Link>
+      </div>
 
       <ResponsiveContainer width="100%" height={200}>
         <AreaChart
@@ -275,8 +349,8 @@ export function SyncChart() {
           syncId="anyId"
           margin={{
             top: 10,
-            right: windowWidth < 768 ? 0 : 90,
-            left: windowWidth < 768 ? 0 : 90,
+            right: windowWidth < 768 ? 0 : 30,
+            left: windowWidth < 768 ? 0 : 30,
             bottom: 0,
           }}
         >
@@ -291,18 +365,67 @@ export function SyncChart() {
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
+          <XAxis
+            dataKey="date"
+            tick={{ fontSize: 11 }}
+            tickFormatter={(value) => {
+              const date = new Date(value);
+              // For 24h data, show only hour
+              if (days === 1) {
+                return date.toLocaleTimeString("en-AU", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                });
+              }
+              // For longer periods, show abbreviated date
+              return date.toLocaleDateString("en-AU", {
+                month: "short",
+                day: "numeric",
+              });
+            }}
+          />
           <YAxis
             domain={["auto", "auto"]}
             tickFormatter={(value) =>
               value.toLocaleString("en", {
                 notation: "compact",
-                compactDisplay: "short",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 3,
               })
             }
+            tick={{ fontSize: 11 }}
+            width={50}
           />
           {/* domain={[0, "auto"]} */}
-          <Tooltip labelStyle={{ color: "black" }} />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "rgba(17, 25, 40, 0.9)",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+              borderRadius: "8px",
+              padding: "8px",
+              color: "#ffffff",
+              fontSize: "12px",
+            }}
+            labelStyle={{ color: "#ffffff" }}
+            labelFormatter={(value) => {
+              const date = new Date(value);
+              return date.toLocaleString("en-AU", {
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+            }}
+            formatter={(value) =>
+              new Intl.NumberFormat("en-AU", {
+                style: "currency",
+                currency: "AUD",
+                notation: "compact",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 3,
+              }).format(value)
+            }
+          />
 
           <Area
             type="monotone"
@@ -316,9 +439,26 @@ export function SyncChart() {
           />
         </AreaChart>
       </ResponsiveContainer>
-      <h1 className="text-md md:text-xl  dark:text-amber-500">
-        Total Volume (AU$)
-      </h1>
+      <div className="flex flex-col">
+        <h1 className="text-md md:text-xl dark:text-amber-500">
+          Total Volume (AU$)
+        </h1>
+        <Link
+          href={{
+            pathname: `/forecast/${CoinID}/volume`,
+            query: { timeframe: days },
+          }}
+        >
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2"
+          >
+            <LineChartIcon className="h-4 w-4" />
+            Forecast
+          </Button>
+        </Link>
+      </div>
       <ResponsiveContainer width="100%" height={200}>
         <AreaChart
           width={500}
@@ -327,8 +467,8 @@ export function SyncChart() {
           syncId="anyId"
           margin={{
             top: 10,
-            right: windowWidth < 768 ? 0 : 90,
-            left: windowWidth < 768 ? 0 : 90,
+            right: windowWidth < 768 ? 0 : 30,
+            left: windowWidth < 768 ? 0 : 30,
             bottom: 0,
           }}
         >
@@ -339,24 +479,73 @@ export function SyncChart() {
             </linearGradient>
           </defs>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="date" />
+          <XAxis
+            dataKey="date"
+            tick={{ fontSize: 11 }}
+            tickFormatter={(value) => {
+              const date = new Date(value);
+              // For 24h data, show only hour
+              if (days === 1) {
+                return date.toLocaleTimeString("en-AU", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                });
+              }
+              // For longer periods, show abbreviated date
+              return date.toLocaleDateString("en-AU", {
+                month: "short",
+                day: "numeric",
+              });
+            }}
+          />
           <YAxis
             domain={["auto", "auto"]}
             tickFormatter={(value) =>
               value.toLocaleString("en", {
                 notation: "compact",
-                compactDisplay: "short",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 1,
               })
             }
+            tick={{ fontSize: 11 }}
+            width={50}
           />
-          <Tooltip labelStyle={{ color: "black" }} />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "rgba(17, 25, 40, 0.9)",
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+              borderRadius: "8px",
+              padding: "8px",
+              color: "#ffffff",
+              fontSize: "12px",
+            }}
+            labelStyle={{ color: "#ffffff" }}
+            labelFormatter={(value) => {
+              const date = new Date(value);
+              return date.toLocaleString("en-AU", {
+                month: "short",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+            }}
+            formatter={(value) =>
+              new Intl.NumberFormat("en-AU", {
+                style: "currency",
+                currency: "AUD",
+                notation: "compact",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 1,
+              }).format(value)
+            }
+          />
           <Area
             type="monotone"
             dataKey="totalVolumes"
             stroke="magenta"
-            //
             fillOpacity={1}
             fill="url(#colorVolumes)"
+            dot={false}
           />
         </AreaChart>
       </ResponsiveContainer>
