@@ -202,7 +202,7 @@
 // pages/forecast/[CoinID]/[type].js
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import useSWR from "swr";
 import { ModeToggle } from "@/Components/ToggleMode/ModeToggle";
