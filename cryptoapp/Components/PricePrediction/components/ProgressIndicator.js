@@ -1,8 +1,8 @@
 // Components/PricePrediction/components/ProgressIndicator.js
 import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { Brain, Minimize2, Maximize2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 import { ProgressBar } from "./ProgressBar";
 import { motion, AnimatePresence } from "framer-motion";
 

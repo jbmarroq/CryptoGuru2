@@ -1,5 +1,3 @@
-// // pages/forecast/[CoinID]/[type].js
-
 // pages/forecast/[CoinID]/[type].js
 import { useRouter } from "next/router";
 import Link from "next/link";
@@ -7,8 +5,8 @@ import { Button } from "@/Components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import useSWR from "swr";
 import { ModeToggle } from "@/Components/ToggleMode/ModeToggle";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs";
+import { Card, CardContent } from "@/Components/ui/card";
 import {
   AreaChart,
   Area,
