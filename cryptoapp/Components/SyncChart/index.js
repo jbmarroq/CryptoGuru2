@@ -324,7 +324,7 @@ export function SyncChart() {
         <h1 className="text-md md:text-xl dark:text-amber-500">
           Market Caps (AU$)
         </h1>
-        <Link
+        {/* <Link
           href={{
             pathname: `/forecast/${CoinID}/market-cap`,
             query: { timeframe: days },
@@ -338,7 +338,7 @@ export function SyncChart() {
             <LineChartIcon className="h-4 w-4" />
             Forecast
           </Button>
-        </Link>
+        </Link> */}
       </div>
 
       <ResponsiveContainer width="100%" height={200}>
@@ -443,7 +443,7 @@ export function SyncChart() {
         <h1 className="text-md md:text-xl dark:text-amber-500">
           Total Volume (AU$)
         </h1>
-        <Link
+        {/* <Link
           href={{
             pathname: `/forecast/${CoinID}/volume`,
             query: { timeframe: days },
@@ -457,7 +457,7 @@ export function SyncChart() {
             <LineChartIcon className="h-4 w-4" />
             Forecast
           </Button>
-        </Link>
+        </Link> */}
       </div>
       <ResponsiveContainer width="100%" height={200}>
         <AreaChart
