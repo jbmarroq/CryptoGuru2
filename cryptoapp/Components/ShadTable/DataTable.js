@@ -1,7 +1,7 @@
 import { GECKO_API_KEY } from "@/Config/CoinGeckoAPI";
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -28,74 +28,7 @@ import {
   YAxis,
   XAxis,
 } from "recharts";
-import { autocompleteClasses } from "@mui/material";
-// Define a type for the column definition
-// You may choose to define it as a plain JavaScript object or customize it further
-// based on your requirements
-// const ColumnDef = {
-//   accessorKey: "",
-//   header: "",
-//   cell: null, // Placeholder for cell rendering function
-// };
 
-// Define your DataTable component
-// export function DataTable({ columns, data }) {
-//   const table = useReactTable({
-//     data,
-//     columns,
-//     getCoreRowModel: getCoreRowModel(),
-//   });
-
-//   return (
-//     <div className="rounded-md border">
-//       <Table>
-//         <TableHeader>
-//           {table.getHeaderGroups().map((headerGroup) => (
-//             <TableRow key={headerGroup.id}>
-//               {headerGroup.headers.map((header) => {
-//                 return (
-//                   <TableHead key={header.id}>
-//                     {header.isPlaceholder
-//                       ? null
-//                       : flexRender(
-//                           header.column.columnDef.header,
-//                           header.getContext()
-//                         )}
-//                   </TableHead>
-//                 );
-//               })}
-//             </TableRow>
-//           ))}
-//         </TableHeader>
-//         <TableBody>
-//           {table.getRowModel().rows?.length ? (
-//             table.getRowModel().rows.map((row) => (
-//               <TableRow
-//                 key={row.id}
-//                 data-state={row.getIsSelected() && "selected"}
-//               >
-//                 {row.getVisibleCells().map((cell) => (
-//                   <TableCell key={cell.id}>
-//                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
-//                     {/* {cell.column.columnDef.cell
-//                       ? cell.column.columnDef.cell(cell.value)
-//                       : cell.render("Cell")} */}
-//                   </TableCell>
-//                 ))}
-//               </TableRow>
-//             ))
-//           ) : (
-//             <TableRow>
-//               <TableCell colSpan={columns.length} className="h-24 text-center">
-//                 No results.
-//               </TableCell>
-//             </TableRow>
-//           )}
-//         </TableBody>
-//       </Table>
-//     </div>
-//   );
-// }
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -119,6 +52,32 @@ const calculateLineColor = (prices) => {
   const lastPrice = prices[prices.length - 1];
 
   return firstPrice <= lastPrice ? "green" : "red"; // Green for uptrend, red for downtrend
+};
+
+// Custom hook for window size
+const useWindowDimensions = () => {
+  const [windowDimensions, setWindowDimensions] = useState({
+    width: undefined,
+    height: undefined,
+  });
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
+
+    // Only add the event listener client-side
+    if (typeof window !== "undefined") {
+      handleResize(); // Initial size
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }
+  }, []);
+
+  return windowDimensions;
 };
 
 export function DataTable() {

@@ -221,14 +221,14 @@ export default function ForecastPage() {
           value={activeTab}
           onValueChange={setActiveTab}
         >
-          <div className="flex justify-between items-center mb-4">
+          {/* <div className="flex justify-between items-center mb-4">
             <TabsList>
               <TabsTrigger value="traditional">
                 Traditional Analysis
               </TabsTrigger>
               <TabsTrigger value="ml">Machine Learning</TabsTrigger>
             </TabsList>
-          </div>
+          </div> */}
 
           <TabsContent value="traditional">
             <Card>
