@@ -6,6 +6,8 @@ import Link from "next/link";
 import { SyncChart } from "@/Components/SyncChart";
 import { Skeleton } from "@/Components/ui/skeleton";
 import { ModeToggle } from "@/Components/ToggleMode/ModeToggle";
+import { Button } from "@/Components/ui/button";
+import { ArrowLeft } from "lucide-react";
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -74,13 +76,16 @@ export default function CoinDetails() {
 
   return (
     <>
-      <div className="p-1 flex items-center justify-between md:px-6">
-        <Link href={"/coins"}>
-          <button className="bg-transparent hover:bg-slate-900  hover:text-white py-2 px-4 border  hover:border-transparent rounded dark:border-slate-700 dark:text-stone-500">
-            Back to Coins
-          </button>
-        </Link>
-        <ModeToggle />
+      <div className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-xs border-b border-slate-200/50 dark:border-slate-800/50">
+        <div className="p-1 flex items-center justify-between md:px-6">
+          <Link href={"/coins"}>
+            <Button variant="outline" className="flex items-center gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              Back to Coins
+            </Button>
+          </Link>
+          <ModeToggle />
+        </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-1">
         <div className="bg-slate-100 col-span-1 border rounded-md p-4  dark:border-stone-700 dark:bg-slate-950">

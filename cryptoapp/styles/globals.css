@@ -1,3 +1,102 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Target all white rectangles within the brush */
+.recharts-brush svg rect[fill="white"],
+.recharts-brush svg rect[fill="#FFFFFF"],
+.recharts-brush svg rect[fill="#fff"],
+.recharts-brush .recharts-wrapper rect[fill="white"],
+.recharts-brush .recharts-surface rect[fill="white"],
+.recharts-wrapper .recharts-surface {
+  fill: transparent !important;
+  background: transparent !important;
+}
+
+/* Target the specific mini chart container */
+.recharts-brush .recharts-wrapper,
+.recharts-brush .recharts-surface,
+.recharts-brush foreignObject {
+  background: transparent !important;
+}
+
+/* Target any rect that might be acting as background */
+.recharts-brush rect[height="30"],
+.recharts-brush rect.recharts-reference-area {
+  fill: transparent !important;
+}
+
+/* Handle colors for each chart type */
+
+/* Price chart handles */
+.brush-price .recharts-brush-traveller {
+  rect {
+    fill: #ffd90080 !important;
+    stroke: goldenrod !important;
+  }
+  line {
+    stroke: goldenrod !important;
+  }
+}
+.brush-marketCaps .recharts-brush-traveller {
+  rect {
+    fill: #90ee9080 !important;
+    stroke: limegreen !important;
+  }
+  line {
+    stroke: limegreen !important;
+  }
+}
+
+.brush-totalVolumes .recharts-brush-traveller {
+  rect {
+    fill: #ff69b480 !important;
+    stroke: magenta !important;
+  }
+  line {
+    stroke: magenta !important;
+  }
+}
+
+/* Dark mode adjustments - slightly lighter colors for better visibility */
+.dark {
+  .brush-price .recharts-brush-traveller {
+    rect {
+      fill: rgba(218, 165, 32, 0.5) !important;
+      stroke: #ffd700 !important;
+    }
+    line {
+      stroke: #ffd700 !important;
+    }
+  }
+
+  /* Market cap chart handles */
+  .brush-marketCaps .recharts-brush-traveller {
+    rect {
+      fill: rgba(50, 205, 50, 0.5) !important;
+      stroke: #90ee90 !important;
+    }
+    line {
+      stroke: #90ee90 !important;
+    }
+  }
+
+  /* Volume chart handles */
+  .brush-totalVolumes .recharts-brush-traveller {
+    rect {
+      fill: rgba(255, 0, 255, 0.5) !important;
+      stroke: #ff69b4 !important;
+    }
+    line {
+      stroke: #ff69b4 !important;
+    }
+  }
+}
+
+.recharts-brush rect.recharts-brush-slide {
+  fill: theme("colors.slate.500") !important;
+}
+
+.dark .recharts-brush rect.recharts-brush-slide {
+  fill: theme("colors.slate.300") !important;
+}

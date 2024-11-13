@@ -22,6 +22,79 @@ import { GECKO_API_KEY } from "@/Config/CoinGeckoAPI";
 import LSTMModel from "@/Components/PricePrediction/models/LSTMModel";
 import GRUModel from "@/Components/PricePrediction/models/GRUModel";
 
+const ConditionalPredictionButtons = ({
+  selectedPredictions,
+  setSelectedPredictions,
+  isLstmEnabled,
+  setIsLstmEnabled,
+  isGruEnabled,
+  setIsGruEnabled,
+  chartType,
+}) => {
+  return (
+    <div className="space-x-2">
+      <Button
+        variant="outline"
+        onClick={() =>
+          setSelectedPredictions((prev) =>
+            prev.includes("sma")
+              ? prev.filter((p) => p !== "sma")
+              : [...prev, "sma"]
+          )
+        }
+        className={`${
+          selectedPredictions.includes("sma")
+            ? "bg-red-100 dark:bg-red-900"
+            : ""
+        } mb-2 md:mb-0`}
+      >
+        Moving Average
+      </Button>
+      <Button
+        variant="outline"
+        onClick={() =>
+          setSelectedPredictions((prev) =>
+            prev.includes("linear")
+              ? prev.filter((p) => p !== "linear")
+              : [...prev, "linear"]
+          )
+        }
+        className={`${
+          selectedPredictions.includes("linear")
+            ? "bg-teal-100 dark:bg-teal-900"
+            : ""
+        }`}
+      >
+        Linear Regression
+      </Button>
+
+      {chartType === "price" && (
+        <>
+          <Button
+            variant="outline"
+            onClick={() => setIsLstmEnabled(!isLstmEnabled)}
+            className={`${
+              isLstmEnabled ? "bg-purple-100 dark:bg-purple-900" : ""
+            }`}
+          >
+            LSTM
+          </Button>
+
+          <Button
+            variant="outline"
+            onClick={() => setIsGruEnabled(!isGruEnabled)}
+            className={`${
+              isGruEnabled ? "bg-indigo-100 dark:bg-indigo-900" : ""
+            }`}
+          >
+            GRU
+          </Button>
+        </>
+      )}
+    </div>
+  );
+};
+
 export default function ForecastPage() {
   const router = useRouter();
   const { CoinID, type } = router.query;
@@ -204,7 +277,7 @@ export default function ForecastPage() {
 
   return (
     <>
-      <div className="p-1 sticky top-0 z-50 w-full border-transparent bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 flex flex-wrap items-center justify-between dark:border-transparent md:px-6">
+      <div className="p-1 sticky top-0 z-50 w-full border-transparent bg-background/95 backdrop-blur-xs supports-[backdrop-filter]:bg-background/60 flex flex-wrap items-center justify-between dark:border-transparent md:px-6">
         <Link href={`/coins/${CoinID}`}>
           <Button variant="outline" className="flex items-center gap-2">
             <ArrowLeft className="h-4 w-4" />
@@ -236,10 +309,9 @@ export default function ForecastPage() {
                 <div className="bg-slate-100 dark:bg-slate-950 p-4 rounded-lg">
                   <div className="flex flex-col md:flex-row justify-between items-center mb-4">
                     <h1 className="text-2xl font-bold dark:text-amber-500 mb-4 md:mb-0">
-                      {type.charAt(0).toUpperCase() + type.slice(1)} Traditional
-                      Forecast
+                      {type.charAt(0).toUpperCase() + type.slice(1)} Forecast
                     </h1>
-                    <div className="space-x-2">
+                    {/* <div className="space-x-2">
                       <Button
                         variant="outline"
                         onClick={() =>
@@ -274,6 +346,7 @@ export default function ForecastPage() {
                       >
                         Linear Regression
                       </Button>
+
                       <Button
                         variant="outline"
                         onClick={() => setIsLstmEnabled(!isLstmEnabled)}
@@ -285,6 +358,7 @@ export default function ForecastPage() {
                       >
                         LSTM
                       </Button>
+
                       <Button
                         variant="outline"
                         onClick={() => setIsGruEnabled(!isGruEnabled)}
@@ -294,6 +368,17 @@ export default function ForecastPage() {
                       >
                         GRU
                       </Button>
+                    </div> */}
+                    <div className="space-x-2">
+                      <ConditionalPredictionButtons
+                        selectedPredictions={selectedPredictions}
+                        setSelectedPredictions={setSelectedPredictions}
+                        isLstmEnabled={isLstmEnabled}
+                        setIsLstmEnabled={setIsLstmEnabled}
+                        isGruEnabled={isGruEnabled}
+                        setIsGruEnabled={setIsGruEnabled}
+                        chartType={type}
+                      />
                     </div>
                   </div>
 

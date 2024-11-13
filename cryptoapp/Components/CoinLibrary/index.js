@@ -9,6 +9,8 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Container, Typography, Box } from "@mui/material";
 import { SyncChart } from "../CoinChart";
+import { Button } from "../ui/button";
+import { ArrowLeft } from "lucide-react";
 
 // import { MultiCarousel } from "../MultiCarousel";
 import { EmblaCarousel } from "../emblacarousel";
@@ -24,9 +26,14 @@ export function CoinLibrary({}) {
         {/* <NavMenu />
         <MenuBar /> */}
         <Link href={"/"}>
-          <button className="bg-transparent text-stone-500 hover:bg-slate-900  hover:text-white py-2 px-4 border  hover:border-transparent rounded dark:border-slate-700 dark:text-stone-500">
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2 "
+          >
+            <ArrowLeft className="h-4 w-4" />
             Back to Guru
-          </button>
+          </Button>
         </Link>
         <ModeToggle />
       </div>
